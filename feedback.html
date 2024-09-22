@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Feedback</title>
+    <style>
+        :root {
+            --font-link-header: "Bebas Neue", sans-serif;
+            --font-texto: "Saira", sans-serif;
+            --background-color: LightBlue;
+            --text-color: #000000;
+            --button-bg-color: #007bff; /* Azul */
+            --button-text-color: #ffffff;
+            --form-bg-color: LightSteelBlue;
+        }
+
+        body.dark-mode {
+            --background-color: MidnightBlue; /* Cor do fundo no modo escuro */
+            --text-color: #ffffff; /* Cor do texto no modo escuro */
+            --form-bg-color: #2c3e50; /* Cor de fundo do formulário no modo escuro */
+            --button-bg-color: #555; /* Cor do botão no modo escuro */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+            margin: 0;
+            position: relative;
+        }
+
+        header {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            flex-grow: 1;
+            text-align: center;
+            margin: 0;
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle-container img {
+            height: 30px;
+            width: auto;
+        }
+
+        main {
+            padding: 20px;
+            width: 100%;
+            max-width: 600px;
+            margin-top: 80px;
+            text-align: left;
+        }
+
+        form {
+            background-color: var(--form-bg-color);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 5px 0 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            cursor: pointer;
+            padding: 5px 10px; /* Diminuído */
+            border: none;
+            border-radius: 5px;
+            font-size: 12px; /* Diminuído */
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3; /* Azul mais escuro */
+        }
+
+        .feedback-item {
+            background-color: var(--form-bg-color);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feedback-item h4 {
+            margin-bottom: 5px;
+        }
+
+        .feedback-item button {
+            margin-right: 5px;
+        }
+
+        .response-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        #thankYouMessages {
+            display: none;
+            margin-top: 20px;
+            color: green;
+        }
+
+        .feedback-image {
+            height: 50px; /* Altura da imagem */
+            width: auto;
+            margin-left: 10px; /* Espaçamento à esquerda da imagem */
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .feedback-content {
+            flex-grow: 1; /* Permite que o conteúdo do feedback ocupe o espaço disponível */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" style="height: 50px;">
+        <h1>Feedback</h1>
+        <div class="theme-toggle-container">
+            <button id="themeToggle">
+                <img src="tema.png" alt="Tema">
+            </button>
+        </div>
+    </header>
+    <img src="feed2.png" alt="feed2.png">
+
+    <main>
+        <form id="feedbackForm">
+            <label for="name">Seu Nome:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Seu E-mail:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="message">Sua Mensagem:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+
+            <input type="submit" value="Enviar">
+        </form>
+
+        <div id="thankYouMessages">
+            <h4>Agradecemos seu feedback!</h4>
+            <ul>
+                <li>Seu comentário é muito importante para nós!</li>
+                <li>Obrigado por ajudar a melhorar nosso serviço!</li>
+                <li>Seu feedback faz a diferença!</li>
+                <li>Agradecemos por compartilhar sua opinião!</li>
+                <li>Estamos sempre em busca de melhorias!</li>
+                <li>Seu retorno é fundamental!</li>
+                <li>Valorizamos sua participação!</li>
+                <li>Agradecemos por dedicar seu tempo!</li>
+                <li>Estamos aqui para ouvir você!</li>
+            </ul>
+        </div>
+
+        <div id="feedbackList"></div>
+    </main>
+
+    <script>
+        document.getElementById('themeToggle').onclick = function() {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        const feedbacks = [];
+
+        document.getElementById('feedbackForm').onsubmit = function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('message').value;
+            const feedback = { name, message, likes: 0, responses: [] };
+            feedbacks.push(feedback);
+            displayFeedbacks();
+            this.reset();
+            document.getElementById('thankYouMessages').style.display = 'block';
+        };
+
+        function displayFeedbacks() {
+            const feedbackList = document.getElementById('feedbackList');
+            feedbackList.innerHTML = '';
+
+            feedbacks.forEach((feedback, index) => {
+                const feedbackItem = document.createElement('div');
+                feedbackItem.className = 'feedback-item';
+                feedbackItem.innerHTML = `
+                    <div class="feedback-content">
+                        <h4>${feedback.name}</h4>
+                        <p>${feedback.message}</p>
+                        <button onclick="likeFeedback(${index})">Curtir (${feedback.likes})</button>
+                        <button onclick="toggleResponseForm(${index})">Responder</button>
+                        <div class="response-form" id="responseForm${index}">
+                            <textarea placeholder="Sua resposta"></textarea>
+                            <button onclick="respondToFeedback(${index})">Enviar Resposta</button>
+                        </div>
+                        <div id="responses${index}"></div>
+                    </div>
+                    <img src="imagem.png" alt="Imagem do Feedback" class="feedback-image"> <!-- Imagem adicionada -->
+                `;
+                feedbackList.appendChild(feedbackItem);
+            });
+        }
+
+        function likeFeedback(index) {
+            feedbacks[index].likes++;
+            displayFeedbacks();
+        }
+
+        function toggleResponseForm(index) {
+            const responseForm = document.getElementById(`responseForm${index}`);
+            responseForm.style.display = responseForm.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function respondToFeedback(index) {
+            const responseTextarea = document.querySelector(`#responseForm${index} textarea`);
+            const response = responseTextarea.value;
+            if (response) {
+                feedbacks[index].responses.push(response);
+                displayFeedbacks();
+            }
+        }
+    </script>
+</body>
+</html>

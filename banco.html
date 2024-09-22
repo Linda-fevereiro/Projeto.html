@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco de Currículos</title>
+    <style>
+        :root {
+            --font-link-header: "Bebas Neue", sans-serif;
+            --font-texto: "Saira", sans-serif;
+            --background-color: LightBlue;
+            --text-color: #000000;
+            --button-bg-color: #007bff;
+            --button-text-color: #ffffff;
+            --form-bg-color: LightSteelBlue;
+        }
+
+        body.dark-mode {
+            --background-color: MidnightBlue;
+            --text-color: #ffffff;
+            --form-bg-color: #2c3e50;
+            --button-bg-color: gray;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: auto;
+            position: relative;
+        }
+
+        header {
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        h1 {
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-toggle-container button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .theme-toggle-container img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            background-color: var(--form-bg-color);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .curriculo {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .chat {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo.png" alt="Logo" style="height: 50px;">
+        <h1>Banco de Currículos</h1>
+        <div class="theme-toggle-container">
+            <button id="themeToggle">
+                <img src="tema.png" alt="Troca de Tema">
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2>Identifique-se</h2>
+        <select id="userType">
+            <option value="responsavel">Responsável</option>
+            <option value="profissional">Profissional</option>
+        </select>
+        
+        <form id="loginForm">
+            <div id="responsavelFields">
+                <input type="text" placeholder="Nome do Responsável" required>
+                <input type="password" placeholder="Senha" required>
+                <input type="text" id="tipoProfissional" placeholder="Tipo de Profissional Procurado">
+            </div>
+            <div id="profissionalFields" class="hidden">
+                <input type="text" placeholder="Nome" required>
+                <input type="email" placeholder="Email" required>
+                <input type="text" placeholder="Número para Contato" required>
+                <input type="text" placeholder="Endereço" required>
+                <input type="file" accept="image/*" required>
+            </div>
+            <button type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        const userTypeSelect = document.getElementById('userType');
+        const responsavelFields = document.getElementById('responsavelFields');
+        const profissionalFields = document.getElementById('profissionalFields');
+        const loginForm = document.getElementById('loginForm');
+
+        userTypeSelect.addEventListener('change', function() {
+            if (this.value === 'responsavel') {
+                responsavelFields.classList.remove('hidden');
+                profissionalFields.classList.add('hidden');
+            } else {
+                responsavelFields.classList.add('hidden');
+                profissionalFields.classList.remove('hidden');
+            }
+        });
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Redirecionar para a página de currículo
+            window.location.href = 'curriculo.html'; // Substitua pelo nome real da página
+        });
+
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+        });
+    </script>
+</body>
+</html>
